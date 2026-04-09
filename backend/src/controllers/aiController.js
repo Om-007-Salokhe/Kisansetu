@@ -60,57 +60,75 @@ exports.getChatResponse = async (req, res) => {
       // 1. Check for Schemes (Prioritize name match)
       const matchedScheme = schemes.find(s => 
         lowerMsg.includes(s.id.toLowerCase()) || 
-        lowerMsg.includes(s.name.toLowerCase())
+        lowerMsg.includes(s.name.toLowerCase()) ||
+        (s.languages?.hi?.name && lowerMsg.includes(s.languages.hi.name.toLowerCase())) ||
+        (s.languages?.mr?.name && lowerMsg.includes(s.languages.mr.name.toLowerCase()))
       );
 
       if (matchedScheme) {
+        let schemeDesc = matchedScheme.description;
+        let schemeBenefits = matchedScheme.benefits;
+        
+        if (language === 'hi' && matchedScheme.languages?.hi) {
+          schemeDesc = matchedScheme.languages.hi.description || schemeDesc;
+        } else if (language === 'mr' && matchedScheme.languages?.mr) {
+          schemeDesc = matchedScheme.languages.mr.description || schemeDesc;
+        }
+
         return res.json({ 
-          reply: `[MOCK MODE] Info about ${matchedScheme.name}: ${matchedScheme.description} Benefits: ${matchedScheme.benefits}.` 
+          reply: `[MOCK MODE] ${language === 'hi' ? 'जानकारी' : language === 'mr' ? 'माहिती' : 'Info'}: ${schemeDesc}` 
         });
       }
 
-      // 2. Check for Knowledge Base facts (Prioritize EXACT Topic match)
-      const soils = ['alluvial', 'black', 'red', 'laterite', 'arid'];
-      const mentionedSoil = soils.find(s => lowerMsg.includes(s));
+      // 2. Check for Knowledge Base facts
+      // Detect soil types in different languages
+      const soils = {
+        alluvial: ['alluvial', 'जलोढ़', 'गाळाची'],
+        black: ['black', 'काली', 'काळी', 'regur'],
+        red: ['red', 'लाल', 'तांबडी'],
+        laterite: ['laterite', 'लैटराइट', 'जांभी'],
+        arid: ['arid', 'शुष्क', 'वाळवंटी']
+      };
+
+      let mentionedSoil = null;
+      for (const [key, keywords] of Object.entries(soils)) {
+        if (keywords.some(k => lowerMsg.includes(k))) {
+          mentionedSoil = key;
+          break;
+        }
+      }
       
       let finalFact = null;
       if (mentionedSoil) {
         finalFact = knowledgeBase.find(kb => kb.topic.toLowerCase().includes(mentionedSoil));
-      } else if (lowerMsg.includes('demand') || lowerMsg.includes('market') || lowerMsg.includes('which crops')) {
+      } else if (lowerMsg.includes('demand') || lowerMsg.includes('market') || lowerMsg.includes('बाजार') || lowerMsg.includes('मार्केट')) {
         finalFact = knowledgeBase.find(kb => kb.topic.toLowerCase().includes('demand'));
       } else {
         finalFact = knowledgeBase.find(kb => lowerMsg.includes(kb.topic.toLowerCase()));
       }
 
       if (finalFact) {
-        let localizedReply = finalFact.fact; // Default to English
+        let localizedReply = finalFact.fact;
         if (language === 'hi' && finalFact.translations?.hi) {
           localizedReply = finalFact.translations.hi;
         } else if (language === 'mr' && finalFact.translations?.mr) {
           localizedReply = finalFact.translations.mr;
         }
         
+        return res.json({ reply: `[MOCK MODE] ${localizedReply}` });
+      }
+
+      // 3. Keyword fallbacks with localized responses
+      if (lowerMsg.includes('crop') || lowerMsg.includes('plant') || lowerMsg.includes('फसल') || lowerMsg.includes('पीक')) {
         return res.json({ 
-          reply: `[MOCK MODE] ${localizedReply}` 
+          reply: language === 'hi' ? "[MOCK MODE] फसल की सलाह के लिए, अपनी मिट्टी के प्रकार और वर्तमान मौसम (खरीफ या रबी) की जांच करना सबसे अच्छा है।" :
+                 language === 'mr' ? "[MOCK MODE] पिकांच्या सल्ल्यासाठी, तुमच्या जमिनीचा प्रकार आणि सध्याचा हंगाम (खरीप किंवा रबी) तपासणे उत्तम आहे." :
+                 "[MOCK MODE] For crop advice, it's best to check your soil type and current season (Kharif or Rabi)." 
         });
       }
 
-      // 3. Keyword fallbacks
-      if (lowerMsg.includes('crop') || lowerMsg.includes('sow') || lowerMsg.includes('plant')) {
-        return res.json({ 
-          reply: `[MOCK MODE] For crop advice, it's best to check your soil type. Rice and Cotton are great for Kharif, while Wheat and Mustard are for Rabi.` 
-        });
-      }
-
-      if (lowerMsg.includes('price') || lowerMsg.includes('market') || lowerMsg.includes('mandi')) {
-        const prices = mockMarketPrices.map(p => `${p.crop}: ₹${p.price}`).join(', ');
-        return res.json({ 
-          reply: `[MOCK MODE] Current market prices are: ${prices}. You can see more details in the 'Market' tab.` 
-        });
-      }
-
-      // Fallback for agriculture-related queries but no specific match
-      const isAgriRelated = /crop|farm|soil|water|pest|price|market|wheat|rice|tomato|fertilizer|scheme|seed|agriculture|weather|kisansetu|projectsetu|sell|buy|listings|order|kisan/i.test(message);
+      // Final generic fallback
+      const isAgriRelated = /crop|farm|soil|water|pest|price|market|wheat|rice|tomato|fertilizer|scheme|seed|agriculture|weather|kisan|फसल|पीक|खेती|शेत|जमीन|मिट्टी/i.test(message);
       
       if (!isAgriRelated) {
         return res.json({ 
@@ -121,7 +139,9 @@ exports.getChatResponse = async (req, res) => {
       }
 
       return res.json({ 
-        reply: `[MOCK MODE] I understand you are asking about "${message}". As an agricultural assistant, I recommend checking our 'Crop Advisory' or 'Govt Schemes' tabs for detailed information regarding this.` 
+        reply: language === 'hi' ? `[MOCK MODE] मुझे समझ में आया कि आप "${message}" के बारे में पूछ रहे हैं। अधिक जानकारी के लिए कृपया 'Crop Advisory' टैब देखें।` :
+               language === 'mr' ? `[MOCK MODE] मला समजले की तुम्ही "${message}" बद्दल विचारत आहात. अधिक माहितीसाठी कृपया 'Crop Advisory' टॅब पहा.` :
+               `[MOCK MODE] I understand you are asking about "${message}". Please check the 'Crop Advisory' tab for more info.` 
       });
     }
 
