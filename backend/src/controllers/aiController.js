@@ -1,5 +1,6 @@
 const axios = require('axios');
 const schemes = require('../data/schemes.json');
+const knowledgeBase = require('../data/knowledge_base.json');
 
 // Mock data for fallback
 const mockWeather = {
@@ -17,19 +18,45 @@ const mockMarketPrices = [
 exports.getChatResponse = async (req, res) => {
   try {
     const { message, language = 'en' } = req.body;
+
+    // Create a summarized string of schemes for the prompt
+    const schemesSummary = schemes.map(s => `- ${s.name}: ${s.description}`).join('\n');
     
-    const systemPrompt = `You are the KisanSetu AI Assistant, a specialized expert in Indian agriculture.
+    // Create a summarized string of knowledge base for the prompt
+    const kbSummary = knowledgeBase.map(kb => `[${kb.topic}]: ${kb.fact}`).join('\n');
+    
+    const systemPrompt = `You are the KisanSetu AI Assistant, a world-class expert in Indian agriculture and a helpful guide for the KisanSetu platform.
+    
+    EXTENDED KNOWLEDGE (FOR TRAINING):
+    ${kbSummary}
+
+    TONE & PERSONALITY:
+    - You are respectful, professional, and empathetic to the challenges of farmers.
+    - Use simple, clear language. Avoid overly technical jargon unless explaining it simply.
+    - Encourage sustainable and profitable farming practices.
+
+    YOUR KNOWLEDGE BASE:
+    - CROP ADVICE: Expert knowledge on Kharif, Rabi, and Zaid crops in India. Advice on sowing, irrigation, fertilizers, and harvesting.
+    - PEST & DISEASE: Identify common pests (like aphids, bollworms) and diseases (like blight, rust). Suggest organic and chemical solutions.
+    - SOIL HEALTH: Guidance on Soil Health Cards, NPK ratios, and organic manuring.
+    - GOVERNMENT SCHEMES: You know about these schemes in detail:
+    ${schemesSummary}
+    - KISANSETU PLATFORM: You can explain features like "Marketplace" (buying/selling), "AI Disease Detection" (uploading photos), "Expense Tracker", and "Live Mandi Prices".
+
     RULES:
-    1. Only answer questions related to agriculture, farming, crops, pests, fertilizers, irrigation, market prices, and government schemes for farmers.
-    2. If a user asks something unrelated to farming or the KisanSetu project (e.g., politics, movies, general trivia), politely decline and state that you only assist with agricultural queries.
-    3. You must respond in the language requested by the user. Supported languages: English, Hindi (हिन्दी), and Marathi (मराठी).
-    4. Provide practical, accurate, and season-specific advice for Indian farmers.
-    5. Currently, the user is interacting in: ${language}.`;
+    1. PURPOSE: Strictly answer questions related to agriculture, livestock, rural business, and the KisanSetu app.
+    2. REFUSAL: If asked about non-farming topics (movies, celebrities, politics), say: "I am specialized in agricultural assistance and KisanSetu services. I cannot help with that, but I can tell you about the best time to sow Wheat!"
+    3. LANGUAGE: Always respond in the user's language: ${language === 'hi' ? 'Hindi (हिन्दी)' : language === 'mr' ? 'Marathi (मराठी)' : 'English'}.
+    4. ACCURACY: If you don't know something specific (like a very local price), state it clearly and provide a general estimate or advice on where to check.
+
+    CURRENT USER CONTEXT:
+    - User is using: ${language === 'hi' ? 'Hindi' : language === 'mr' ? 'Marathi' : 'English'}.
+    - The platform is KisanSetu, which connects farmers directly to buyers.`;
 
     // Check if API key exists
     if (!process.env.OPENAI_API_KEY) {
       // Improved mock response logic for testing
-      const isAgriRelated = /crop|farm|soil|water|pest|price|market|wheat|rice|tomato|fertilizer|scheme|seed|agriculture|weather|kisansetu|projectsetu|sell|buy|listings|order/i.test(message);
+      const isAgriRelated = /crop|farm|soil|water|pest|price|market|wheat|rice|tomato|fertilizer|scheme|seed|agriculture|weather|kisansetu|projectsetu|sell|buy|listings|order|kisan/i.test(message);
       
       if (!isAgriRelated) {
         return res.json({ 
@@ -39,9 +66,16 @@ exports.getChatResponse = async (req, res) => {
         });
       }
 
-      return res.json({ 
-        reply: `[MOCK MODE] Language: ${language}. AI suggests: For your query about "${message}", ensure you follow best practices for ${language === 'hi' ? 'भारतीय खेती' : 'Indian farming'}.` 
-      });
+      // Context-aware mock responses based on keywords
+      let mockReply = `[MOCK MODE] Language: ${language}. AI suggests: For your query about "${message}", ensure you follow best practices for ${language === 'hi' ? 'भारतीय खेती' : 'Indian farming'}.`;
+      
+      if (message.toLowerCase().includes('scheme')) {
+        mockReply = `You can check schemes like PM-KISAN or PMFBY in our 'Schemes' section. These provide financial and insurance support to farmers.`;
+      } else if (message.toLowerCase().includes('price')) {
+        mockReply = `Current market prices for crops like Wheat and Rice are stable in local Mandis. Check our 'Market Prices' section for live updates.`;
+      }
+
+      return res.json({ reply: mockReply });
     }
 
     const response = await axios.post('https://api.openai.com/v1/chat/completions', {
@@ -49,7 +83,9 @@ exports.getChatResponse = async (req, res) => {
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: message }
-      ]
+      ],
+      temperature: 0.7,
+      max_tokens: 500
     }, {
       headers: { 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}` }
     });
