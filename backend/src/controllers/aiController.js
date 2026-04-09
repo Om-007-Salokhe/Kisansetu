@@ -180,17 +180,57 @@ exports.detectDisease = async (req, res) => {
       return res.status(400).json({ error: 'No image uploaded' });
     }
     
-    // Simulate AI model processing time
-    setTimeout(() => {
-      res.json({
+    const possibleDetections = [
+      {
         detection: "Early Blight",
         probability: 0.92,
-        treatment: "Apply Copper-based fungicides. Remove infected lower leaves.",
+        treatment: "Apply Copper-based fungicides. Remove infected lower leaves and improve air circulation.",
         pesticide: "Mancozeb or Chlorothalonil"
-      });
-    }, 1500);
+      },
+      {
+        detection: "Rice Blast",
+        probability: 0.88,
+        treatment: "Avoid excessive nitrogen fertilizer. Use resistant varieties. Maintain proper water levels.",
+        pesticide: "Tricyclazole or Carbendazim"
+      },
+      {
+        detection: "Wheat Rust",
+        probability: 0.95,
+        treatment: "Destroy volunteer wheat plants. Sowing resistant varieties is the most effective approach.",
+        pesticide: "Propiconazole or Tebuconazole"
+      },
+      {
+        detection: "Cotton Black Arm",
+        probability: 0.84,
+        treatment: "Seed treatment with antibiotics. Remove and burn infected plant debris after harvest.",
+        pesticide: "Streptocycline or Copper Oxychloride"
+      },
+      {
+        detection: "Healthy Crop",
+        probability: 0.99,
+        treatment: "No disease detected. Continue regular monitoring and balanced fertilization.",
+        pesticide: "None required. Use organic repellents for prevention."
+      }
+    ];
+
+    // Pick a result based on filename hash to be consistent for the same file, 
+    // but different for different files.
+    const filename = req.file.originalname || "image";
+    let hash = 0;
+    for (let i = 0; i < filename.length; i++) {
+      hash = ((hash << 5) - hash) + filename.charCodeAt(i);
+      hash |= 0; 
+    }
+    const index = Math.abs(hash) % possibleDetections.length;
+    const result = possibleDetections[index];
+
+    // Simulate AI model processing time
+    setTimeout(() => {
+      res.json(result);
+    }, 2000);
     
   } catch (error) {
+    console.error('Detection Error:', error);
     res.status(500).json({ error: 'Disease detection failed' });
   }
 };
