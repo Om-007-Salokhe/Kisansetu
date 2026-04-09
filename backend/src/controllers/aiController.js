@@ -57,24 +57,37 @@ exports.getChatResponse = async (req, res) => {
     if (!process.env.OPENAI_API_KEY) {
       const lowerMsg = message.toLowerCase();
       
-      // 1. Check for Schemes
+      // 1. Check for Schemes (Prioritize name match)
       const matchedScheme = schemes.find(s => 
-        lowerMsg.includes(s.name.toLowerCase()) || 
-        lowerMsg.includes(s.id.toLowerCase()) ||
-        (lowerMsg.includes('scheme') && lowerMsg.includes(s.name.split(' ')[0].toLowerCase()))
+        lowerMsg.includes(s.id.toLowerCase()) || 
+        lowerMsg.includes(s.name.toLowerCase())
       );
 
       if (matchedScheme) {
         return res.json({ 
-          reply: `[MOCK MODE] Information about ${matchedScheme.name}: ${matchedScheme.description} Benefits include: ${matchedScheme.benefits}.` 
+          reply: `[MOCK MODE] Info about ${matchedScheme.name}: ${matchedScheme.description} Benefits: ${matchedScheme.benefits}.` 
         });
       }
 
-      // 2. Check for Knowledge Base facts
+      // 2. Check for Knowledge Base facts (Prioritize EXACT Topic match)
+      // Check for soil types first as they are specific
+      const soils = ['alluvial', 'black', 'red', 'laterite', 'arid'];
+      const mentionedSoil = soils.find(s => lowerMsg.includes(s));
+      
+      if (mentionedSoil) {
+        const soilFact = knowledgeBase.find(kb => kb.topic.toLowerCase().includes(mentionedSoil));
+        if (soilFact) return res.json({ reply: `[MOCK MODE] Regarding ${soilFact.topic}: ${soilFact.fact}` });
+      }
+
+      // Check for high demand / market / crops match
+      if (lowerMsg.includes('demand') || lowerMsg.includes('market') || lowerMsg.includes('which crops')) {
+        const demandFact = knowledgeBase.find(kb => kb.topic.toLowerCase().includes('demand'));
+        if (demandFact) return res.json({ reply: `[MOCK MODE] For market trends: ${demandFact.fact}` });
+      }
+
+      // General topic matching
       const matchedFact = knowledgeBase.find(kb => 
-        lowerMsg.includes(kb.topic.toLowerCase()) || 
-        kb.fact.toLowerCase().includes(lowerMsg) ||
-        (lowerMsg.includes('crop') && kb.topic.toLowerCase().includes('soil'))
+        lowerMsg.includes(kb.topic.toLowerCase())
       );
 
       if (matchedFact) {
@@ -83,10 +96,10 @@ exports.getChatResponse = async (req, res) => {
         });
       }
 
-      // 3. Check for specific keywords for generic but helpful agricultural advice
+      // 3. Keyword fallbacks
       if (lowerMsg.includes('crop') || lowerMsg.includes('sow') || lowerMsg.includes('plant')) {
         return res.json({ 
-          reply: `[MOCK MODE] For crop suggestions, it's best to consider your soil type (Alluvial, Black, Red) and the current season (Kharif or Rabi). Typically, Rice and Cotton are great for Kharif, while Wheat and Mustard are preferred for Rabi.` 
+          reply: `[MOCK MODE] For crop advice, it's best to check your soil type. Rice and Cotton are great for Kharif, while Wheat and Mustard are for Rabi.` 
         });
       }
 

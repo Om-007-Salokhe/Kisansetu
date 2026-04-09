@@ -21,7 +21,15 @@
   },
   {
     "topic": "Alluvial Soil",
-    "fact": "Alluvial soil is the most fertile soil in India. It is ideal for growing Wheat, Rice, Sugarcane, Pulses, and Oilseeds. It requires consistent irrigation but minimal chemical supplements if maintained well."
+    "fact": "Alluvial soil is the most fertile soil in India. It is ideal for growing Wheat, Rice, Sugarcane, Pulses, and Oilseeds. It requires consistent irrigation."
+  },
+  {
+    "topic": "Black Soil",
+    "fact": "Black soil (Regur) is excellent for Cotton, Sugarcane, and Wheat. It has high water-holding capacity. It becomes sticky when wet and develops deep cracks when dry."
+  },
+  {
+    "topic": "Red Soil",
+    "fact": "Red soil is suitable for Groundnut, Maize, and Pulses. It requires good irrigation and organic manuring because it has low nutrient content naturally."
   },
   {
     "topic": "Seed Quality",
