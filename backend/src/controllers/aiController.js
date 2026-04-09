@@ -53,9 +53,51 @@ exports.getChatResponse = async (req, res) => {
     - User is using: ${language === 'hi' ? 'Hindi' : language === 'mr' ? 'Marathi' : 'English'}.
     - The platform is KisanSetu, which connects farmers directly to buyers.`;
 
-    // Check if API key exists
+      // Check if API key exists
     if (!process.env.OPENAI_API_KEY) {
-      // Improved mock response logic for testing
+      const lowerMsg = message.toLowerCase();
+      
+      // 1. Check for Schemes
+      const matchedScheme = schemes.find(s => 
+        lowerMsg.includes(s.name.toLowerCase()) || 
+        lowerMsg.includes(s.id.toLowerCase()) ||
+        (lowerMsg.includes('scheme') && lowerMsg.includes(s.name.split(' ')[0].toLowerCase()))
+      );
+
+      if (matchedScheme) {
+        return res.json({ 
+          reply: `[MOCK MODE] Information about ${matchedScheme.name}: ${matchedScheme.description} Benefits include: ${matchedScheme.benefits}.` 
+        });
+      }
+
+      // 2. Check for Knowledge Base facts
+      const matchedFact = knowledgeBase.find(kb => 
+        lowerMsg.includes(kb.topic.toLowerCase()) || 
+        kb.fact.toLowerCase().includes(lowerMsg) ||
+        (lowerMsg.includes('crop') && kb.topic.toLowerCase().includes('soil'))
+      );
+
+      if (matchedFact) {
+        return res.json({ 
+          reply: `[MOCK MODE] Regarding ${matchedFact.topic}: ${matchedFact.fact}` 
+        });
+      }
+
+      // 3. Check for specific keywords for generic but helpful agricultural advice
+      if (lowerMsg.includes('crop') || lowerMsg.includes('sow') || lowerMsg.includes('plant')) {
+        return res.json({ 
+          reply: `[MOCK MODE] For crop suggestions, it's best to consider your soil type (Alluvial, Black, Red) and the current season (Kharif or Rabi). Typically, Rice and Cotton are great for Kharif, while Wheat and Mustard are preferred for Rabi.` 
+        });
+      }
+
+      if (lowerMsg.includes('price') || lowerMsg.includes('market') || lowerMsg.includes('mandi')) {
+        const prices = mockMarketPrices.map(p => `${p.crop}: ₹${p.price}`).join(', ');
+        return res.json({ 
+          reply: `[MOCK MODE] Current market prices are: ${prices}. You can see more details in the 'Market' tab.` 
+        });
+      }
+
+      // Fallback for agriculture-related queries but no specific match
       const isAgriRelated = /crop|farm|soil|water|pest|price|market|wheat|rice|tomato|fertilizer|scheme|seed|agriculture|weather|kisansetu|projectsetu|sell|buy|listings|order|kisan/i.test(message);
       
       if (!isAgriRelated) {
@@ -66,16 +108,9 @@ exports.getChatResponse = async (req, res) => {
         });
       }
 
-      // Context-aware mock responses based on keywords
-      let mockReply = `[MOCK MODE] Language: ${language}. AI suggests: For your query about "${message}", ensure you follow best practices for ${language === 'hi' ? 'भारतीय खेती' : 'Indian farming'}.`;
-      
-      if (message.toLowerCase().includes('scheme')) {
-        mockReply = `You can check schemes like PM-KISAN or PMFBY in our 'Schemes' section. These provide financial and insurance support to farmers.`;
-      } else if (message.toLowerCase().includes('price')) {
-        mockReply = `Current market prices for crops like Wheat and Rice are stable in local Mandis. Check our 'Market Prices' section for live updates.`;
-      }
-
-      return res.json({ reply: mockReply });
+      return res.json({ 
+        reply: `[MOCK MODE] I understand you are asking about "${message}". As an agricultural assistant, I recommend checking our 'Crop Advisory' or 'Govt Schemes' tabs for detailed information regarding this.` 
+      });
     }
 
     const response = await axios.post('https://api.openai.com/v1/chat/completions', {

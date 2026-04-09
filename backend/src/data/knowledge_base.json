@@ -14,5 +14,21 @@
   {
     "topic": "Water Management",
     "fact": "Drip irrigation can save up to 40-70% water compared to flood irrigation and reduces the incidence of weeds and diseases."
+  },
+  {
+    "topic": "High Demand Crops",
+    "fact": "Currently, Basmati Rice, Organic Cotton, Sugarcane, and high-value vegetables like Broccoli and Red Bell Peppers are in high demand in both domestic and export markets."
+  },
+  {
+    "topic": "Alluvial Soil",
+    "fact": "Alluvial soil is the most fertile soil in India. It is ideal for growing Wheat, Rice, Sugarcane, Pulses, and Oilseeds. It requires consistent irrigation but minimal chemical supplements if maintained well."
+  },
+  {
+    "topic": "Seed Quality",
+    "fact": "Always use certified H.Y.V (High Yielding Variety) seeds. Testing seed germination (at least 70% success) before sowing can save you from 20-30% loss in total yield."
+  },
+  {
+    "topic": "Pest Management",
+    "fact": "Yellow Sticky Traps are a great low-cost way to monitor and control whiteflies and aphids without using harmful chemicals."
   }
 ]
