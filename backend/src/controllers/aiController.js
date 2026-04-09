@@ -70,29 +70,28 @@ exports.getChatResponse = async (req, res) => {
       }
 
       // 2. Check for Knowledge Base facts (Prioritize EXACT Topic match)
-      // Check for soil types first as they are specific
       const soils = ['alluvial', 'black', 'red', 'laterite', 'arid'];
       const mentionedSoil = soils.find(s => lowerMsg.includes(s));
       
+      let finalFact = null;
       if (mentionedSoil) {
-        const soilFact = knowledgeBase.find(kb => kb.topic.toLowerCase().includes(mentionedSoil));
-        if (soilFact) return res.json({ reply: `[MOCK MODE] Regarding ${soilFact.topic}: ${soilFact.fact}` });
+        finalFact = knowledgeBase.find(kb => kb.topic.toLowerCase().includes(mentionedSoil));
+      } else if (lowerMsg.includes('demand') || lowerMsg.includes('market') || lowerMsg.includes('which crops')) {
+        finalFact = knowledgeBase.find(kb => kb.topic.toLowerCase().includes('demand'));
+      } else {
+        finalFact = knowledgeBase.find(kb => lowerMsg.includes(kb.topic.toLowerCase()));
       }
 
-      // Check for high demand / market / crops match
-      if (lowerMsg.includes('demand') || lowerMsg.includes('market') || lowerMsg.includes('which crops')) {
-        const demandFact = knowledgeBase.find(kb => kb.topic.toLowerCase().includes('demand'));
-        if (demandFact) return res.json({ reply: `[MOCK MODE] For market trends: ${demandFact.fact}` });
-      }
-
-      // General topic matching
-      const matchedFact = knowledgeBase.find(kb => 
-        lowerMsg.includes(kb.topic.toLowerCase())
-      );
-
-      if (matchedFact) {
+      if (finalFact) {
+        let localizedReply = finalFact.fact; // Default to English
+        if (language === 'hi' && finalFact.translations?.hi) {
+          localizedReply = finalFact.translations.hi;
+        } else if (language === 'mr' && finalFact.translations?.mr) {
+          localizedReply = finalFact.translations.mr;
+        }
+        
         return res.json({ 
-          reply: `[MOCK MODE] Regarding ${matchedFact.topic}: ${matchedFact.fact}` 
+          reply: `[MOCK MODE] ${localizedReply}` 
         });
       }
 

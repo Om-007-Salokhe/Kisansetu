@@ -1,42 +1,50 @@
 [
   {
     "topic": "Soil Preparation",
-    "fact": "For Kharif crops, land preparation should start after the first monsoon showers. Deep plowing every three years helps in soil aeration and pest control."
+    "fact": "For Kharif crops, land preparation should start after the first monsoon showers. Deep plowing every three years helps in soil aeration and pest control.",
+    "translations": {
+      "hi": "खरीफ फसलों के लिए, पहली मानसूनी बौछारों के बाद भूमि की तैयारी शुरू कर देनी चाहिए। हर तीन साल में गहरी जुताई मिट्टी के वातन और कीट नियंत्रण में मदद करती है।",
+      "mr": "खरीप पिकांसाठी, पहिल्या मान्सूनच्या सरीनंतर जमिनीची तयारी सुरू करावी. दर तीन वर्षांनी खोल नांगरणी केल्याने जमिनीतील हवा खेळती राहते आणि कीड नियंत्रणास मदत होते."
+    }
   },
   {
     "topic": "Organic Fertilizer",
-    "fact": "Jeevamrut is a powerful organic fertilizer made from cow dung, urine, jaggery, and pulse flour. It enhances microbial activity in the soil."
+    "fact": "Jeevamrut is a powerful organic fertilizer made from cow dung, urine, jaggery, and pulse flour. It enhances microbial activity in the soil.",
+    "translations": {
+      "hi": "जीवामृत गाय के गोबर, मूत्र, गुड़ और दाल के आटे से बना एक शक्तिशाली जैविक उर्वरक है। यह मिट्टी में सूक्ष्मजीवों की गतिविधि को बढ़ाता है।",
+      "mr": "जीवामृत हे शेण, गोमूत्र, गूळ आणि डाळीच्या पिठापासून तयार केलेले एक शक्तिशाली सेंद्रिय खत आहे. हे जमिनीतील सूक्ष्मजीवांची क्रिया वाढवते."
+    }
   },
   {
     "topic": "Pest Control",
-    "fact": "Neem oil spray (5ml per liter of water) is effective against sucking pests like aphids and jassids in most vegetable crops."
-  },
-  {
-    "topic": "Water Management",
-    "fact": "Drip irrigation can save up to 40-70% water compared to flood irrigation and reduces the incidence of weeds and diseases."
+    "fact": "Neem oil spray (5ml per liter of water) is effective against sucking pests like aphids and jassids in most vegetable crops.",
+    "translations": {
+      "hi": "नीम के तेल का स्प्रे (5 मिली प्रति लीटर पानी) अधिकांश सब्जी फसलों में एफिड्स और जैसिड्स जैसे चूसने वाले कीटों के खिलाफ प्रभावी है।",
+      "mr": "लिंबोळी अर्काची फवारणी (५ मिली प्रति लिटर पाणी) बहुतेक भाजीपाला पिकांमधील मावा आणि तुडतुड्यांसारख्या शोषक किडींविरुद्ध प्रभावी आहे."
+    }
   },
   {
     "topic": "High Demand Crops",
-    "fact": "Currently, Basmati Rice, Organic Cotton, Sugarcane, and high-value vegetables like Broccoli and Red Bell Peppers are in high demand in both domestic and export markets."
-  },
-  {
-    "topic": "Alluvial Soil",
-    "fact": "Alluvial soil is the most fertile soil in India. It is ideal for growing Wheat, Rice, Sugarcane, Pulses, and Oilseeds. It requires consistent irrigation."
+    "fact": "Currently, Basmati Rice, Organic Cotton, Sugarcane, and high-value vegetables like Broccoli and Red Bell Peppers are in high demand.",
+    "translations": {
+      "hi": "वर्तमान में बासमती चावल, जैविक कपास, गन्ना और ब्रोकली और लाल शिमला मिर्च जैसी उच्च मूल्य वाली सब्जियों की बहुत मांग है।",
+      "mr": "सध्या बासमती तांदूळ, सेंद्रिय कापूस, ऊस आणि ब्रोकोली आणि लाल सिमला मिरची यांसारख्या उच्च मूल्याच्या भाज्यांना मोठी मागणी आहे."
+    }
   },
   {
     "topic": "Black Soil",
-    "fact": "Black soil (Regur) is excellent for Cotton, Sugarcane, and Wheat. It has high water-holding capacity. It becomes sticky when wet and develops deep cracks when dry."
+    "fact": "Black soil (Regur) is excellent for Cotton, Sugarcane, and Wheat. It has high water-holding capacity.",
+    "translations": {
+      "hi": "काली मिट्टी (रेगुर) कपास, गन्ने और गेहूं के लिए उत्कृष्ट है। इसमें जल धारण करने की उच्च क्षमता होती है।",
+      "mr": "काळी मृदा (रेगूर) कापूस, ऊस आणि गव्हासाठी उत्कृष्ट आहे. यामध्ये पाणी धरून ठेवण्याची क्षमता जास्त असते."
+    }
   },
   {
-    "topic": "Red Soil",
-    "fact": "Red soil is suitable for Groundnut, Maize, and Pulses. It requires good irrigation and organic manuring because it has low nutrient content naturally."
-  },
-  {
-    "topic": "Seed Quality",
-    "fact": "Always use certified H.Y.V (High Yielding Variety) seeds. Testing seed germination (at least 70% success) before sowing can save you from 20-30% loss in total yield."
-  },
-  {
-    "topic": "Pest Management",
-    "fact": "Yellow Sticky Traps are a great low-cost way to monitor and control whiteflies and aphids without using harmful chemicals."
+    "topic": "Alluvial Soil",
+    "fact": "Alluvial soil is the most fertile soil in India. It is ideal for growing Wheat, Rice, Sugarcane, Pulses, and Oilseeds.",
+    "translations": {
+      "hi": "जलोढ़ मिट्टी भारत की सबसे उपजाऊ मिट्टी है। यह गेहूं, चावल, गन्ना, दलहन और तिलहन उगाने के लिए आदर्श है।",
+      "mr": "गाळाची मृदा ही भारतातील सर्वात सुपीक मृदा आहे. गहू, तांदूळ, ऊस, कडधान्ये आणि तेलबिया पिकवण्यासाठी हे आदर्श आहे."
+    }
   }
 ]
