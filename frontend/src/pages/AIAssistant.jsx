@@ -73,11 +73,32 @@ const AIAssistant = () => {
   };
 
   const fetchWeather = async () => {
-    try {
-      const res = await axios.get('/api/ai/weather');
-      setWeather(res.data);
-    } catch (err) {
-      console.error(err);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+          const res = await axios.get(`/api/ai/weather?lat=${latitude}&lon=${longitude}`);
+          setWeather(res.data);
+        } catch (err) {
+          console.error(err);
+        }
+      }, async (error) => {
+        console.warn("Geolocation blocked, falling back to default.");
+        try {
+          const res = await axios.get('/api/ai/weather'); // Falls back to default city (Pune) in backend
+          setWeather(res.data);
+        } catch (err) {
+          console.error(err);
+        }
+      });
+    } else {
+      // Fallback if geologist not supported
+      try {
+        const res = await axios.get('/api/ai/weather');
+        setWeather(res.data);
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
