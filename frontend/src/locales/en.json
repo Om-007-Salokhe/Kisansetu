@@ -1,0 +1,66 @@
+{
+  "common": {
+    "login": "Login",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "logout": "Logout",
+    "home": "Home",
+    "email": "Email Address",
+    "password": "Password",
+    "welcome": "Welcome Back",
+    "signIn": "Sign In",
+    "noAccount": "Don't have an account?",
+    "registerHere": "Register here",
+    "placeholderEmail": "Enter your email",
+    "placeholderPassword": "Enter your password",
+    "fullName": "Full Name",
+    "phone": "Phone Number",
+    "aadhar": "Aadhar Card Number",
+    "city": "City / Location",
+    "role": "Role",
+    "createAccount": "Create an Account",
+    "joinSubtitle": "Join KisanSetu and start growing.",
+    "alreadyAccount": "Already have an account?",
+    "loginHere": "Login here",
+    "creatingAccount": "Creating Account...",
+    "farmer": "Farmer",
+    "buyer": "Buyer",
+    "admin": "Administrator"
+  },
+  "nav": {
+    "addProduct": "Add Product",
+    "myListings": "My Listings",
+    "myOrders": "My Orders",
+    "marketplace": "Marketplace",
+    "adminTitle": "Admin Dashboard"
+  },
+  "landing": {
+    "title": "KisanSetu",
+    "subtitle": "Connecting Farmers directly to Buyers",
+    "getStarted": "Get Started",
+    "joinAsFarmer": "Join as Farmer",
+    "browseMarket": "Browse Market",
+    "heroTitle": "Direct Trade for a ",
+    "heroTitleAccent": "Greener Future",
+    "heroDescription": "KisanSetu completely removes middlemen, providing farmers with higher profit margins and buyers with fresher produce at better prices.",
+    "badge": "🌾 Empowering Farmers, Connecting Buyers",
+    "features": {
+      "direct": "Direct Marketplace",
+      "directDesc": "List your harvest directly. Buyers see exactly what you offer, with no hidden fees or middlemen.",
+      "profit": "Profit Analytics",
+      "profitDesc": "Track all your expenses, calculate net margins, and understand your farm's financial health perfectly.",
+      "secure": "Secure Payments",
+      "secureDesc": "Guaranteed secure transactions via UPI, Cards, and Escrow-based COD built on standard gateways."
+    }
+  },
+  "ai": {
+    "title": "AI Assistant",
+    "askPlaceholder": "Ask me anything about farming...",
+    "weatherTitle": "Weather Updates",
+    "marketPrices": "Market Prices",
+    "diseaseDetection": "Pest & Disease Detection",
+    "govtSchemes": "Government Schemes",
+    "listening": "Listening...",
+    "stopListening": "Stop"
+  }
+}

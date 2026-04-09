@@ -1,0 +1,81 @@
+[
+  {
+    "id": "pm-kisan",
+    "name": "PM-KISAN (Pradhan Mantri Kisan Samman Nidhi)",
+    "description": "Income support of Rs. 6000/- per year in three equal installments to all landholding farmer families.",
+    "eligibility": "All landholding farmer families are eligible.",
+    "benefits": "Financial benefit of Rs. 6000 per year.",
+    "steps": [
+      "Visit PM-KISAN portal",
+      "Click on New Farmer Registration",
+      "Fill Aadhar and other details",
+      "Submit for verification"
+    ],
+    "languages": {
+      "hi": {
+        "name": "पीएम-किसान (प्रधानमंत्री किसान सम्मान निधि)",
+        "description": "सभी भूमिधारक किसान परिवारों को तीन समान किश्तों में 6000/- रुपये प्रति वर्ष की आय सहायता।"
+      },
+      "mr": {
+        "name": "पीएम-किसान (प्रधानमंत्री किसान सन्मान निधी)",
+        "description": "सर्व भूधारक शेतकरी कुटुंबांना दरवर्षी ६०००/- रुपये उत्पन्नाचा आधार तीन समान हप्त्यांमध्ये."
+      }
+    }
+  },
+  {
+    "id": "pmfby",
+    "name": "Pradhan Mantri Fasal Bima Yojana (PMFBY)",
+    "description": "Crop insurance scheme to provide financial support to farmers suffering crop loss/damage.",
+    "eligibility": "All farmers including sharecroppers and tenant farmers growing notified crops in notified areas.",
+    "benefits": "Low premium, full sum insured in case of loss.",
+    "steps": [
+      "Contact nearest bank/CSC center",
+      "Fill application form",
+      "Pay nominal premium",
+      "Keep receipt for claims"
+    ],
+    "languages": {
+      "hi": {
+        "name": "प्रधानमंत्री फसल बीमा योजना (PMFBY)",
+        "description": "फसल नुकसान/क्षति झेलने वाले किसानों को वित्तीय सहायता प्रदान करने के लिए फसल बीमा योजना।"
+      }
+    }
+  },
+  {
+    "id": "pm-kusum",
+    "name": "PM-KUSUM (Pradhan Mantri Kisan Urja Suraksha evam Utthaan Mahabhiyan)",
+    "description": "Financial support to install solar pumps and grid-connected solar power plants.",
+    "eligibility": "Farmers, groups of farmers, Cooperatives, Panchayats.",
+    "benefits": "60% subsidy on solar pumps. Additional income from selling surplus power.",
+    "steps": [
+      "Contact State Nodal Agency for MNRE",
+      "Fill application online on state portal",
+      "Upload land records and Aadhar",
+      "Selection based on merit/queue"
+    ],
+    "languages": {
+      "hi": {
+        "name": "पीएम-कुसुम",
+        "description": "सौर पंप और ग्रिड से जुड़े सौर ऊर्जा संयंत्रों को स्थापित करने के लिए वित्तीय सहायता।"
+      }
+    }
+  },
+  {
+    "id": "soil-health",
+    "name": "Soil Health Card Scheme",
+    "description": "Providing soil health cards to all farmers to help them understand soil nutrient status.",
+    "eligibility": "All farmers.",
+    "benefits": "Know exactly what fertilizer is needed. Save money on unnecessary inputs.",
+    "steps": [
+      "Submit soil sample at nearest lab",
+      "Get card with nutrient info",
+      "Follow fertilizer recommendations"
+    ],
+    "languages": {
+      "hi": {
+        "name": "मृदा स्वास्थ्य कार्ड योजना",
+        "description": "किसानों को उनके मिट्टी के पोषक तत्वों की स्थिति को समझने में मदद करने के लिए मृदा स्वास्थ्य कार्ड प्रदान करना।"
+      }
+    }
+  }
+]
